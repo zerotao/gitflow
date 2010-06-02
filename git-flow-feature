@@ -49,6 +49,7 @@ usage() {
 	echo "       git flow feature track <name>"
 	echo "       git flow feature diff [<name|nameprefix>]"
 	echo "       git flow feature rebase [-i] [<name|nameprefix>]"
+	echo "       git flow feature checkout [<name|nameprefix>]"
 }
 
 cmd_default() {
@@ -387,6 +388,22 @@ cmd_diff() {
 		BASE=$(git merge-base "$DEVELOP_BRANCH" HEAD)
 		git diff "$BASE"
 	fi
+}
+
+cmd_checkout() {
+	parse_args "$@"
+
+	if [ "$NAME" != "" ]; then
+		expand_nameprefix_arg
+		git checkout "$BRANCH"
+	else
+		die "Name a feature branch explicitly."
+	fi
+}
+
+cmd_co() {
+	# Alias for checkout
+	cmd_checkout "$@"
 }
 
 cmd_rebase() {
