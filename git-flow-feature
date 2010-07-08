@@ -66,6 +66,11 @@ cmd_list() {
 	feature_branches=$(echo "$(git_local_branches)" | grep "^$PREFIX")
 	if [ -z "$feature_branches" ]; then
 		warn "No feature branches exist."
+		warn ""
+		warn "You can start a new feature branch:"
+		warn ""
+		warn "    git flow feature start <name> [<base>]"
+		warn ""
 		exit 0
 	fi
 	current_branch=$(git branch | grep '^\* ' | grep -v 'no branch' | sed 's/^* //g')
@@ -315,7 +320,7 @@ helper_finish_cleanup() {
 	if flag fetch; then
 		git push "$ORIGIN" ":refs/heads/$BRANCH"
 	fi
-	git branch -d "$BRANCH"
+	git branch -D "$BRANCH"
 
 	echo
 	echo "Summary of actions:"
